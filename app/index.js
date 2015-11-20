@@ -1,9 +1,16 @@
 var express = require('express');
 var url = require('url');
+var nodemailer = require('nodemailer');
 
 var app = express();
-app.get('/', function (req, res) {
+
+
+app.get('/', function(req, res) {
     res.send('Hello World!');
+});
+
+app.post('/webhook/:author/:book/:token', function(req, res, next) {
+
 });
 
 

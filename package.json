@@ -9,7 +9,9 @@
         "express": "4.13.3",
         "lodash": "3.10.1",
         "q": "1.4.1",
-
+        "body-parser": "1.14.1",
+        "gitbook-api": "1.0.4",
+        "nodemailer": "1.10.0"
     },
     "repository": {
         "type": "git",
