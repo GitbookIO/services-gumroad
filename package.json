@@ -1,0 +1,25 @@
+{
+    "name": "gumroad-service.gitbook.com",
+    "main": "app/index.js",
+    "description": "Sell GitBook.com books on Gumroad",
+    "homepage": "https://gumroad-service.gitbook.com",
+    "version": "0.0.0",
+    "private": true,
+    "dependencies": {
+        "express": "4.13.3",
+        "lodash": "3.10.1",
+        "q": "1.4.1",
+
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/GitbookIO/services-gumroad.git"
+    },
+    "license": "Apache-2.0",
+    "bugs": {
+        "url": "https://github.com/GitbookIO/services-gumroad/issues"
+    },
+    "scripts": {
+        "start": "node ./index.js"
+    }
+}
