@@ -3,7 +3,6 @@ var url = require('url');
 var nodemailer = require('nodemailer');
 var bodyParser = require('body-parser')
 var GitBook = require('gitbook-api');
-var utils = require('./utils');
 
 var app = express();
 
@@ -26,12 +25,10 @@ app.post('/webhook/:author/:book/:token', function(req, res, next) {
 
     var bookId = [req.params.author, req.params.book].join('/');
     var book = gitbook.book(bookId);
-    var keyValue = utils.guid();
 
     // Create the access key on gitbook.com
     book.createKey({
-        label: 'Gumroad: ' + payload.full_name + ' (' + payload.email + ')',
-        key: keyValue
+        label: 'Gumroad: ' + payload.full_name + ' (' + payload.email + ')'
     })
 
     // Send url to read the book
