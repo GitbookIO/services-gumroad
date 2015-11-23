@@ -22,6 +22,6 @@
         "url": "https://github.com/GitbookIO/services-gumroad/issues"
     },
     "scripts": {
-        "start": "node ./index.js"
+        "start": "node ./app/index.js"
     }
 }
