@@ -17,7 +17,6 @@ app.get('/', function(req, res) {
 // Incomming webhook from Gumroad
 app.post('/webhook/:author/:book/:token', function(req, res, next) {
     var payload = req.body;
-    console.log('receive payload', payload);
 
     if (!payload.email) return next(new Error('Require "email" in payload'));
 
@@ -36,7 +35,6 @@ app.post('/webhook/:author/:book/:token', function(req, res, next) {
 
     // Send url to read the book
     .then(function(key) {
-        console.log('-> key', key);
         res.send(key.urls.read)
     })
     .fail(next);
