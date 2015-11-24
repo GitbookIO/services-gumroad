@@ -2,7 +2,6 @@
 
 Sell your GitBook private book on Gumroad.
 
-
 ### Sell your book on Gumroad
 
 1. Create and publish a private book on [GitBook.com](https://www.gitbook.com)
