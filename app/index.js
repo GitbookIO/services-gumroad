@@ -1,5 +1,7 @@
+var path = require('path');
 var express = require('express');
 var url = require('url');
+var nunjucks = require("nunjucks");
 var bodyParser = require('body-parser');
 var cookieSession = require('cookie-session');
 var GitBook = require('gitbook-api');
@@ -41,7 +43,14 @@ passport.use(new GitBookStrategy({
 ));
 
 var app = express();
-app.set('trust proxy', 1)
+app.set('trust proxy', 1);
+
+
+var tpl = new nunjucks.Environment(new nunjucks.FileSystemLoader(path.resolve(__dirname, '../views')), {
+    autoescape: true,
+    watch: true
+});
+tpl.express(app);
 
 // Parse request body
 app.use(bodyParser.json());
@@ -55,8 +64,12 @@ app.use(cookieSession({
 app.use(passport.initialize());
 app.use(passport.session());
 
+// Serve assets
+app.use('/assets', express.static(path.resolve(__dirname, '../public')));
+app.use('/assets', express.static(path.resolve(__dirname, '../node_modules/gitbook-styleguide/assets')));
+
 app.get('/', function(req, res) {
-    res.send('Hello World!');
+    res.render('index.html');
 });
 
 // Incomming webhook from Gumroad
