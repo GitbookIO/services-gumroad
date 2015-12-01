@@ -1,14 +1,59 @@
 var express = require('express');
 var url = require('url');
-var nodemailer = require('nodemailer');
-var bodyParser = require('body-parser')
+var bodyParser = require('body-parser');
+var cookieSession = require('cookie-session');
 var GitBook = require('gitbook-api');
+var passport = require('passport');
+var GumroadStrategy = require('passport-gumroad').Strategy;
+var GitBookStrategy = require('passport-gitbook').Strategy;
+
+
+var HOSTNAME = process.env.HOSTNAME;
+
+passport.serializeUser(function(user, done) {
+    done(null, user);
+});
+
+passport.deserializeUser(function(obj, done) {
+    done(null, obj);
+});
+
+// Configure gumroad oauth
+passport.use(new GumroadStrategy({
+        clientID: process.env.GUMROAD_CLIENT_ID,
+        clientSecret: process.env.GUMROAD_CLIENT_SECRET,
+        callbackURL: url.resolve(HOSTNAME, "/auth/gumroad/callback")
+    },
+    function(accessToken, refreshToken, profile, done) {
+        return done(null, profile);
+    }
+));
+
+// Configure gumroad oauth
+passport.use(new GitBookStrategy({
+        clientID: process.env.GITBOOK_CLIENT_ID,
+        clientSecret: process.env.GITBOOK_CLIENT_SECRET,
+        callbackURL: url.resolve(HOSTNAME, "/auth/gitbook/callback")
+    },
+    function(accessToken, refreshToken, profile, done) {
+        return done(null, profile);
+    }
+));
 
 var app = express();
+app.set('trust proxy', 1)
 
 // Parse request body
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
+
+app.use(cookieSession({
+    name: 'session',
+    keys: (process.env.SESSION_KEYS || 'test').split(',')
+}))
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.get('/', function(req, res) {
     res.send('Hello World!');
@@ -39,6 +84,20 @@ app.post('/webhook/:author/:book/:token', function(req, res, next) {
     })
     .fail(next);
 });
+
+app.get('/auth/gumroad', passport.authenticate('gumroad'));
+app.get('/auth/gumroad/callback',
+    passport.authenticate('gumroad', { failureRedirect: '/login' }),
+    function(req, res) {
+        res.redirect('/');
+    });
+
+app.get('/auth/gitbook', passport.authenticate('gitbook'));
+app.get('/auth/gitbook/callback',
+    passport.authenticate('gitbook', { failureRedirect: '/login' }),
+    function(req, res) {
+        res.redirect('/');
+    });
 
 app.use(function(err, req, res, next) {
     console.error(err.stack || err);

@@ -10,7 +10,10 @@
         "q": "1.4.1",
         "body-parser": "1.14.1",
         "gitbook-api": "2.0.0",
-        "nodemailer": "1.10.0"
+        "passport": ">= 0.0.0",
+        "passport-gumroad": "1.0.0",
+        "passport-gitbook": "1.0.0",
+        "cookie-session": "1.2.0"
     },
     "repository": {
         "type": "git",
