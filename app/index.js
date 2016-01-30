@@ -31,7 +31,7 @@ app.post('/webhook/:author/:book/:token', function(req, res, next) {
     // Create the access key on gitbook.com
     book.createKey({
         label: 'Gumroad: ' + (payload.full_name || 'Unknown') + ' (' + payload.email + ')'
-    });
+    })
 
     // Send url to read the book
     .then(function(key) {
